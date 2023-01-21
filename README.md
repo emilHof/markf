@@ -61,6 +61,7 @@ item1|item2|item3...
 - `var`: Set or get a variable 
 
 ```Usage: var <varname> ```
+
 ```Usage: var <varname> = <value...>```
 
 
@@ -72,12 +73,15 @@ item1|item2|item3...
 - `trim`: Trims a list
 
 ``` Usage: trim <from> <to (exclusive)> <list>```
+
 `from` - (inclusive)
+
 `to` - (exclusive) if `<to>` is < 0, it will include the rest of the list
 
 - `foreach`: Loops through a list and executes a macro for each item
 
 ```Usage: foreach <varname> in <list> <body>```
+
 > You'll likely want to surround the body in curly braces to prevent the macro from being executed prematurely
 
 #### Unsafe Macros
