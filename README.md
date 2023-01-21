@@ -32,7 +32,7 @@ supported output formats (based on the extension):
 
 Supported HTML elements
 
-- `<color [r],[g],[b]>` or `<color [color option]>`  - set the color of the text (see [color options](####color-options))
+- `<color [r],[g],[b]>` or `<color [color option]>`  - set the color of the text (see [color options](#color-options))
 - `<pagebreak>` - insert a page break
 - `<center>` - center the element (this only works with text & images)
 
@@ -110,7 +110,7 @@ Please note that escape characters are not escaped until after evaluating all ma
 
 ```Usage: foreach <varname> in <list> <body>```
 
-You'll likely want to surround the body in curly braces to prevent the macro from being executed prematurely (see [Delayed Evaluation](####Delayed-Evaluation))
+You'll likely want to surround the body in curly braces to prevent the macro from being executed prematurely (see [Delayed Evaluation](#Delayed-Evaluation))
 
 #### Unsafe Macros
 
