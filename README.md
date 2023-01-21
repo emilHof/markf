@@ -1,5 +1,5 @@
-<h1 style="text-align:center;">markf</h1>
-<h4 style="text-align:center;">Markdown to PDF renderer with macro support</h4>
+<h1 align="center">markf</h1>
+<h4 align="center">Markdown to PDF renderer with macro support</h4>
 
 ---
 
@@ -8,7 +8,7 @@
 ## Installation
 
 ```
-go install github.com/OutboundSpade/markf
+go install github.com/OutboundSpade/markf@latest
 ```
 
 ## Usage
