@@ -75,8 +75,8 @@ func loadMacro(path string, p *macro.Parser) {
 				} else {
 					joined += fmt.Sprintf("|%s", arg)
 				}
-				joined += "`"
 			}
+			joined += "`"
 			newData = bytes.ReplaceAll(newData, []byte("#$..."), []byte(joined))
 			logger.Printf("args: '%s'\n", joined)
 			return string(newData)
