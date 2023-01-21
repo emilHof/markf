@@ -7,4 +7,3 @@ combined:
 #!(greet john dave bob)
 
 #!(file-list .)
-#!(file-read test.txt)

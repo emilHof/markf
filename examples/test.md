@@ -55,7 +55,16 @@ This is a [link](https://example.com)
 Inline `code` is possible
 
 ---
+
+pagebreak here:
 <pagebreak>
+
+### <color red>Color!</color>
+### <color orange>Color!</color>
+### <color yellow>Color!</color>
+### <color green>Color!</color>
+### <color blue>Color!</color>
+### <color purple>Color!</color>
 
 # H1
 ## H2

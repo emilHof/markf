@@ -2,8 +2,8 @@
 I have #!(var a) apples!
 
 #!(
-	foreach name in "john steve billy" {
-		`Hey #!(var name)! `
+	foreach name in "john|steve|billy" {
+		`Hey #!(var name)!\n`
 	}
 )
 
