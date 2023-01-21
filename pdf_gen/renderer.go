@@ -135,7 +135,7 @@ func parseNode(node *blackfriday.Node, pdf *gopdf.GoPdf, level int) {
 	case blackfriday.Code:
 		pdf.SetFont(CODE_FONT, "", FONT_SIZE)
 		drawTextWrapped(pdf, string(node.Literal), node.Parent)
-		pdf.Br(BREAK_HEIGHT)
+		// pdf.Br(BREAK_HEIGHT)
 		// code := string(node.Literal)
 		// for i, ln := range strings.Split(code, "\n") {
 		// 	if i > 0 {
@@ -229,9 +229,11 @@ func parseNode(node *blackfriday.Node, pdf *gopdf.GoPdf, level int) {
 
 var colors = map[string][]int{
 	"red":    {255, 0, 0},
+	"orange": {255, 165, 0},
+	"yellow": {255, 255, 0},
 	"green":  {0, 255, 0},
 	"blue":   {0, 0, 255},
-	"yellow": {255, 255, 0},
+	"purple": {128, 0, 128},
 	"white":  {255, 255, 255},
 	"black":  {0, 0, 0},
 }

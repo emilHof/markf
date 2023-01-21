@@ -23,20 +23,27 @@ Usage markf [options] <input file>
     - output file
   -p- print output to stdout
 ```
+if `-o` is not specified, the output will be saved to the same directory as the input file with the same name but with the extension `.pdf`.
+
+supported output formats (based on the extension):
+- pdf
+- markdown
 ### Custom HTML Elements
 
 Supported HTML elements
 
 - `<color [r],[g],[b]>` or `<color [color option]>`  - set the color of the text (see [color options](####color-options))
 - `<pagebreak>` - insert a page break
-- `<center>` - center the element
+- `<center>` - center the element (this only works with text & images)
 
 #### Color Options
 
 - `red`
+- `orange`
+- `yellow`
 - `green`
 - `blue`
-- `yellow`
+- `purple`
 - `white`
 - `black`
 
@@ -56,6 +63,27 @@ Lists are defined using the following syntax:
 item1|item2|item3...
 ```
 
+Characters `'`, `"`, \`, and sets of `()` are all escaped and are inteded to combine parameters with spaces into a single parameter.
+eg. `#!(macro-name "this is a parameter")` will be parsed having the parameters:
+- #0 - `macro-name`
+- #1 - `this is a parameter`
+#### Delayed Evaluation
+Sets of `{}` create a "delayed evaluation" block. This means that the contents of the block will not be evaluated until the next evaluation cycle. This is useful for macros that take a body as a parameter.
+
+eg. `#!(macro-name {#!(macro-name2)})` will be parsed having the parameters:
+- #0 - `macro-name`
+- #1 - `#!(macro-name2)`
+
+whereas `#!(macro-name #!(macro-name2))` will be parsed having the parameters:
+
+- #0 - `macro-name`
+- #...- the result of `#!(macro-name2)`
+
+#### Escape Characters
+- `\n` - newline
+- `\t` - tab
+
+Please note that escape characters are not escaped until after evaluating all macros.
 ### Built-in Macros
 
 - `var`: Set or get a variable 
@@ -72,7 +100,7 @@ item1|item2|item3...
 
 - `trim`: Trims a list
 
-``` Usage: trim <from> <to (exclusive)> <list>```
+``` Usage: trim <from> <to> <list>```
 
 `from` - (inclusive)
 
@@ -82,7 +110,7 @@ item1|item2|item3...
 
 ```Usage: foreach <varname> in <list> <body>```
 
-> You'll likely want to surround the body in curly braces to prevent the macro from being executed prematurely
+You'll likely want to surround the body in curly braces to prevent the macro from being executed prematurely (see [Delayed Evaluation](####Delayed-Evaluation))
 
 #### Unsafe Macros
 
@@ -111,7 +139,7 @@ The macro name is the name of the file without the extension. eg. `test.md` will
 
 Custom macros can make use of the built-in & external macros.
 
-Parameters that are passed to the macro can be read using `#$<num>` for a specific parameter or `#$...` for all parameters in list form.
+Parameters that are passed to the macro can be read using `#$<num>` for a specific parameter or `#$...` for all parameters in list form. Parameters are 0-indexed with `#$0` being the macro name.
 
 ## Support
 
@@ -128,6 +156,7 @@ markf supports the following markdown elements:
 - Italic
 - Bold
 - Horizontal Line
-- Images
+- Images (only png)
+  - From local files, URLs, and base64 encoded data
 - Text
 - HTML Elements (only custom ones)

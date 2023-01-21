@@ -17,7 +17,7 @@ var FG_COLOR = color.Black
 var BG_COLOR = color.White
 
 // var asni_capture = regexp.MustCompile("[\u001B\u009B][[\\]()#;?]*(?:(?:(?:[a-zA-Z\\d]*(?:;[a-zA-Z\\d]*)*)?\u0007)|(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PRZcf-ntqry=><~]))")
-var wierd = regexp.MustCompile("[^a-zA-Z0-9\n`~!@#$%^&*()_+-= \t]+")
+var wierd = regexp.MustCompile("[^a-zA-Z0-9\n`~!@#$%^&*()\\[\\]{}\\\\\\<\\>|_+-= \t]+")
 var dup = regexp.MustCompile("[\\s\\S]*\a")
 
 // var asni_capture = regexp.MustCompile("\x1B(?:[@-Z\\-_]|[[0-?]*[ -/]*[@-~])")
@@ -89,7 +89,8 @@ func text2Png(text string) (*[]byte, error) {
 	ctx.SetColor(BG_COLOR)
 	ctx.Clear()
 	ctx.SetColor(FG_COLOR)
-	ctx.DrawStringWrapped(text, LINE_SPACING*2, 0, 0, 0, float64(WIDTH), LINE_SPACING, gg.AlignLeft)
+	// ctx.DrawString(text, LINE_SPACING*2, LINE_SPACING*2)
+	ctx.DrawStringWrapped(text, LINE_SPACING*2, 0, 0, 0, float64(WIDTH), LINE_SPACING, 0)
 
 	//new writer
 	var buf bytes.Buffer
