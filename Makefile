@@ -1,7 +1,7 @@
-all: build-windows build-linux build-mac build-mac-amd64
+all: build-windows build-linux build-mac
 
+export CGO_ENABLED=0
 NAME=markf
-CGO_ENABLED=0
 
 build-windows:
 	GOOS=windows GOARCH=386 go build -o bin/$(NAME)-windows-i32.exe
