@@ -3,7 +3,7 @@
 #!(
 	foreach name in #!(var names) {
 		#!(foreach color in #!(var colors) {
-			#!(var name) - #!(var color)\n
+			<color #!(var color)>#!(var name)</color>\n
 		})
 	}
 )
