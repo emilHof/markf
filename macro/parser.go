@@ -207,7 +207,6 @@ func EvalMacro(content []byte, macros []*Macro) *string {
 		tt = strings.TrimSpace(tt)
 		tt = strings.ReplaceAll(tt, "'", "")
 		tt = strings.ReplaceAll(tt, "`", "")
-		tt = strings.ReplaceAll(tt, "\"", "")
 		// }
 		if strings.HasPrefix(tt, "#!(") {
 			i := isolateFirstCommand([]byte(tt))
