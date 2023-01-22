@@ -205,9 +205,16 @@ func EvalMacro(content []byte, macros []*Macro) *string {
 		tt := s.Text()
 		// if !strings.HasPrefix(tt, "{") {
 		tt = strings.TrimSpace(tt)
-		tt = strings.ReplaceAll(tt, "'", "")
-		tt = strings.ReplaceAll(tt, "`", "")
-		tt = strings.ReplaceAll(tt, "\"", "")
+		quotesChars := []string{"'", "`", "\""}
+		for _, char := range quotesChars {
+			if strings.HasPrefix(tt, char) && strings.HasSuffix(tt, char) {
+				tt = strings.Trim(tt, char)
+				break
+			}
+		}
+		// tt = strings.ReplaceAll(tt, "'", "")
+		// tt = strings.ReplaceAll(tt, "`", "")
+		// tt = strings.ReplaceAll(tt, "\"", "")
 		// }
 		if strings.HasPrefix(tt, "#!(") {
 			i := isolateFirstCommand([]byte(tt))
