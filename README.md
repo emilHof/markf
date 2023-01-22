@@ -7,8 +7,13 @@
 
 ## Installation
 
+Latest release:
 ```
 go install github.com/OutboundSpade/markf@latest
+```
+Main branch:
+```
+go install github.com/OutboundSpade/markf@main
 ```
 
 ## Usage
