@@ -3,12 +3,14 @@ package exec
 import (
 	"bufio"
 	"bytes"
+	"fmt"
 	"image/color"
 	"image/png"
 	"io"
 	"os"
 	"os/exec"
 	"regexp"
+	"strings"
 
 	"github.com/fogleman/gg"
 )
@@ -47,8 +49,9 @@ func ScreenShotCommands(commands []string) (*[]byte, error) {
 	}
 	tmp = dup.ReplaceAll(tmp, []byte(""))
 	shell_txt = append(shell_txt, tmp...)
-
 	shell_txt = wierd.ReplaceAll(shell_txt, []byte(""))
+	shell_txt = []byte(strings.TrimSpace(string(shell_txt)))
+	shell_txt = append(shell_txt, []byte(" ")...)
 
 	if _, err = stdin.Write([]byte("exit\n")); err != nil {
 		return nil, err
@@ -84,13 +87,14 @@ var LINE_SPACING = 1.5
 func text2Png(text string) (*[]byte, error) {
 	// var h = 400.0
 	ctx1 := gg.NewContext(WIDTH, 600)
-	_, h := ctx1.MeasureMultilineString(text, LINE_SPACING)
-	ctx := gg.NewContext(WIDTH, int(h*1.5+LINE_SPACING*4))
+	lc := drawStringWrapped(ctx1, text, LINE_SPACING*2, LINE_SPACING*2, float64(WIDTH), LINE_SPACING)
+	ctx := gg.NewContext(WIDTH, int(float64(lc+1)*(LINE_SPACING*float64(ctx1.FontHeight()))))
 	ctx.SetColor(BG_COLOR)
 	ctx.Clear()
 	ctx.SetColor(FG_COLOR)
-	// ctx.DrawString(text, LINE_SPACING*2, LINE_SPACING*2)
-	ctx.DrawStringWrapped(text, LINE_SPACING*2, 0, 0, 0, float64(WIDTH), LINE_SPACING, 0)
+	// ctx.DrawStringWrapped(text, LINE_SPACING*2, 0, 0, 0, float64(WIDTH), LINE_SPACING, 0)
+
+	drawStringWrapped(ctx, text, 0, 0, float64(WIDTH), LINE_SPACING)
 
 	//new writer
 	var buf bytes.Buffer
@@ -104,6 +108,56 @@ func text2Png(text string) (*[]byte, error) {
 	// f, _ := os.OpenFile("out.png", os.O_CREATE|os.O_WRONLY, 0644)
 	// f.Write(out)
 	return &out, nil
+}
+
+// returns the number of lines
+func drawStringWrapped(ctx *gg.Context, text string, x, y, width, lineSpacing float64) int {
+	lines := strings.Split(text, "\n")
+	lineCount := 0
+	for _, rawLine := range lines {
+		lineWidth, _ := ctx.MeasureString(rawLine)
+		splitLine := []string{}
+		if lineWidth > width {
+			words := strings.Split(rawLine, " ")
+			line := ""
+			for wi, word := range words {
+				wordWidth, _ := ctx.MeasureString(word)
+				if wordWidth > width {
+					// word is too long to fit on a line
+					// split it up
+					for _, char := range word {
+						if wordWidth, _ = ctx.MeasureString(line + string(char)); wordWidth > width {
+							splitLine = append(splitLine, line)
+							line = ""
+						}
+						line += string(char)
+						// splitLine = append(splitLine, word[i:i+int(width)])
+					}
+				} else if wordWidth, _ = ctx.MeasureString(line + " " + word); wordWidth > width {
+					// word is too long to fit on this line
+					// add it to the next line
+					splitLine = append(splitLine, line)
+					line = word + " "
+				} else {
+					// word fits on this line
+					line += word + " "
+				}
+				if wi == len(words)-1 {
+					splitLine = append(splitLine, line)
+				}
+			}
+		} else {
+			splitLine = append(splitLine, rawLine)
+		}
+		for _, line := range splitLine {
+			lineCount += 1
+			fmt.Printf("'%s'\n", line)
+			ctx.DrawString(line, x, y+float64(lineCount)*LINE_SPACING*ctx.FontHeight())
+			// ctx.DrawString(line, LINE_SPACING*2, float64(lineCount)*LINE_SPACING*ctx.FontHeight())
+			// ctx.DrawStringAnchored(line, LINE_SPACING*2, float64(lineCount)*LINE_SPACING, 0, float64(lineCount)*LINE_SPACING+1)
+		}
+	}
+	return lineCount
 }
 
 func readUntil(r io.Reader, delim string) ([]byte, error) {
