@@ -3,7 +3,6 @@ package exec
 import (
 	"bufio"
 	"bytes"
-	"fmt"
 	"image/color"
 	"image/png"
 	"io"
@@ -151,10 +150,7 @@ func drawStringWrapped(ctx *gg.Context, text string, x, y, width, lineSpacing fl
 		}
 		for _, line := range splitLine {
 			lineCount += 1
-			fmt.Printf("'%s'\n", line)
 			ctx.DrawString(line, x, y+float64(lineCount)*LINE_SPACING*ctx.FontHeight())
-			// ctx.DrawString(line, LINE_SPACING*2, float64(lineCount)*LINE_SPACING*ctx.FontHeight())
-			// ctx.DrawStringAnchored(line, LINE_SPACING*2, float64(lineCount)*LINE_SPACING, 0, float64(lineCount)*LINE_SPACING+1)
 		}
 	}
 	return lineCount
