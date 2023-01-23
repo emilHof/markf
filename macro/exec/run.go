@@ -109,6 +109,19 @@ func text2Png(text string) (*[]byte, error) {
 	return &out, nil
 }
 
+func preserveIndent(line: string) []string {
+	prev := " ";
+	words := []string{};
+
+	for i, ch := range line {
+		if ch == ' ' {
+			if prev.length > 1 {
+				words = append(words, prev);
+			}
+		}
+	}
+}
+
 // returns the number of lines
 func drawStringWrapped(ctx *gg.Context, text string, x, y, width, lineSpacing float64) int {
 	lines := strings.Split(text, "\n")
